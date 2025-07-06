@@ -19,8 +19,16 @@ FILE_DATA = {
         "caption": "Yeh rahi aapki file, **Episode 1**! 🍿\n\nEnjoy the show!"
     },
     "Episode2": {
-        "id": "YOUR_EPISODE_2_FILE_ID_HERE",  # <-- यहाँ Episode 2 की असली ID डालें
+        "id": "BAACAgUAAxkBAAMKaGpLylL2eBYyfy9tX8wqGoVV12gAAv0VAALdcVBXBhEhvub79Q02BA",  # <-- यहाँ Episode 2 की असली ID डालें
         "caption": "Episode 2 aapke liye hazir hai. 🔥"
+    },
+    "Episode3": {
+        "id": "BAACAgUAAyEFAAShOSZMAAMMaGpfS9qYzH5wqaRPNDsJ0ciP20oAAiwaAALcllFXDd-uaCejjP42BA",  # <-- यहाँ Episode 2 की असली ID डालें
+        "caption": "Episode 3 kaisa laga harur bataye hai. 🔥"
+    },
+    "Episode4": {
+        "id": "BAACAgUAAyEFAAShOSZMAAMNaGptb-AV1IS4pMYZnu0w8CE2ifcAAkUaAALcllFXV_eBJdoJfRI2BA",  # <-- यहाँ Episode 2 की असली ID डालें
+        "caption": "Episode 3 kaisa laga harur bataye hai. 🔥"
     },
     # आप और भी फाइलें ऐसे ही जोड़ सकते हैं
 }
