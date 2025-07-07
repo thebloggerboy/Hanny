@@ -2,12 +2,8 @@ import os
 import logging
 from threading import Thread
 from flask import Flask
-
-from telegram import Update, 
-InlineKeyboardButton, 
-InlineKeyboardMarkup
-from telegram.ext import Application, 
-CommandHandler, ContextTypes
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram.ext import Application, CommandHandler, ContextTypes
 # Logging setup to see errors and other info
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
