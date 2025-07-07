@@ -104,7 +104,7 @@ async def get_id(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if file_id:
         # Markdown फॉर्मेटिंग हटा दी गई है ताकि यह कभी फेल न हो।
-        await update.message.reply_text(f"✅ File ki ID mil gayi hai:\n\n{file_id}")
+        await update.message.reply_text(file_id)
     else:
         await update.message.reply_text("Is message mein koi supported file nahi mili. Please video ya document par reply karein.")
 
