@@ -25,8 +25,8 @@ FORCE_SUB_CHANNELS = [
 
 # 2. अपनी फाइलों की जानकारी यहाँ डालें
 FILE_DATA = {
-    "Episode1": {"id": "FILE_ID_EPISODE_1", "caption": "<b>Episode 1</b>\nQuality: 720pHD"},
-    "Episode2": {"id": "FILE_ID_EPISODE_2", "caption": "<b>Episode 2</b>\nQuality: 1080p"},
+    "Episode1": {"id": "BAACAgUAAxkBAAMXaGpSqvDgq-0fAszJ6iItqfYpI7wAAroTAALdcVBXt_ZT-2d9Lno2BA", "caption": "<b>Episode 1</b>\nQuality: 720pHD"},
+    "Episode2": {"id": "BAACAgUAAxkBAAMKaGpLylL2eBYyfy9tX8wqGoVV12gAAv0VAALdcVBXBhEhvub79Q02BA", "caption": "<b>Episode 2</b>\nQuality: 1080p"},
     # और फाइलें यहाँ जोड़ें
 }
 
