@@ -80,7 +80,9 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 # --- यहाँ सिंटैक्स ठीक किया गया है ---
                 keyboard = [
                     [InlineKeyboardButton("🚀 Join Our Main Channel 🚀", url="https://t.me/Primium_Links")]
-                ]
+                ],
+                [InlineKeyboardButton("🌐 Visit Our Website", url="https://www.google.com")]
+]
                 reply_markup = InlineKeyboardMarkup(keyboard)
 
                 sent_message = await context.bot.send_video(
