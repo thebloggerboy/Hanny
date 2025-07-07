@@ -81,7 +81,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             try:
                 keyboard = [
         [InlineKeyboardButton("🚀 Join Our Main Channel 🚀", url="https://t.me/Primium_Links")]
-                    reply_markup = InlineKeyboardMarkup(keyboard)
+                    reply_markup = InlineKeyboardMarkup(keyboard) ]
                 sent_message = await context.bot.send_video(chat_id=chat_id, video=file_id, caption=video_caption, parse_mode='HTML'
                 reply_markup=reply_markup )
                 await context.bot.send_message(chat_id=chat_id, text="⚠️ Yeh file 30 minute mein automatically delete ho jayegi.\nPlease ise jaldi download ya save kar lein.")
