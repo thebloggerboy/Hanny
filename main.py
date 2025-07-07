@@ -5,7 +5,8 @@ from flask import Flask
 
 from telegram import Update
 from telegram.ext import Application, CommandHandler, ContextTypes
-
+InlineKeyboardButton, 
+InlineKeyboardMarkup
 # Logging setup to see errors and other info
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
@@ -28,6 +29,10 @@ FILE_DATA = {
     },
     "Episode4": {
         "id": "BAACAgUAAyEFAAShOSZMAAMNaGptb-AV1IS4pMYZnu0w8CE2ifcAAkUaAALcllFXV_eBJdoJfRI2BA",  # <-- यहाँ Episode 2 की असली ID डालें
+        "caption": "Episode 3 kaisa laga harur bataye hai. 🔥"
+    },
+    "Episode5": {
+        "id": "BAACAgUAAyEFAAShOSZMAAMOaGrMd7AfX7lSlMjp2j9eno1S-boAAr0aAALcllFXE2YkRJy7b8E2BA",  # <-- यहाँ Episode 2 की असली ID डालें
         "caption": "Episode 3 kaisa laga harur bataye hai. 🔥"
     },
     # आप और भी फाइलें ऐसे ही जोड़ सकते हैं
@@ -77,7 +82,11 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             file_info = FILE_DATA[file_key]
             file_id, video_caption = file_info["id"], file_info["caption"]
             try:
-                sent_message = await context.bot.send_video(chat_id=chat_id, video=file_id, caption=video_caption, parse_mode='HTML')
+                keyboard = [
+        [InlineKeyboardButton("🚀 Join Our Main Channel 🚀", url="https://t.me/Primium_Links")]
+                    reply_markup = InlineKeyboardMarkup(keyboard)
+                sent_message = await context.bot.send_video(chat_id=chat_id, video=file_id, caption=video_caption, parse_mode='HTML'
+                reply_markup=reply_markup )
                 await context.bot.send_message(chat_id=chat_id, text="⚠️ Yeh file 30 minute mein automatically delete ho jayegi.\nPlease ise jaldi download ya save kar lein.")
                 context.job_queue.run_once(delete_message, DELETE_DELAY, chat_id=chat_id, data={'message_id': sent_message.message_id})
             except Exception as e:
