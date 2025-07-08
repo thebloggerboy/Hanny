@@ -6,13 +6,13 @@ from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Application, CommandHandler, ContextTypes, CallbackQueryHandler
 from telegram.constants import ParseMode
 from telegram.error import BadRequest
-import asyncio
 
 # === बेसिक सेटअप ===
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
 )
 logger = logging.getLogger(__name__)
+print("Logging configured.")
 
 # --- अपनी जानकारी यहाँ डालें ---
 FORCE_SUB_CHANNELS = [
@@ -22,9 +22,8 @@ FORCE_SUB_CHANNELS = [
 FILE_DATA = {
     "Episode1": {"id": "BAACAgUAAxkBAAMXaGpSqvDgq-0fAszJ6iItqfYpI7wAAroTAALdcVBXt_ZT-2d9Lno2BA", "caption": "<b>Episode 1</b>\nQuality: 720pHD"},
 }
-ADMIN_IDS = [6056915535]  # अपनी यूजर ID यहाँ डालें
+ADMIN_IDS = [6056915535]  # अपनी सही यूजर ID यहाँ डालें
 
-# === कॉन्फ़िगरेशन ===
 DELETE_DELAY = 1800
 
 # --- Keep-Alive सर्वर ---
@@ -37,8 +36,9 @@ def run_flask():
 def keep_alive():
     t = Thread(target=run_flask)
     t.start()
+    print("Flask server thread started.")
 
-# --- हेल्पर फंक्शन्स ---
+# --- ... (बाकी के हेल्पर फंक्शन्स वैसे ही रहेंगे) ... ---
 async def is_user_member(user_id: int, context: ContextTypes.DEFAULT_TYPE) -> bool:
     for channel in FORCE_SUB_CHANNELS:
         try:
@@ -58,8 +58,6 @@ async def auto_delete_messages(context: ContextTypes.DEFAULT_TYPE):
     try:
         for msg_id in message_ids_to_delete:
             await context.bot.delete_message(chat_id=chat_id, message_id=msg_id)
-        logger.info(f"Messages {message_ids_to_delete} deleted for user {chat_id}")
-        
         keyboard = [[InlineKeyboardButton("♻️ Click Here", callback_data=f"resend_{file_key}"), InlineKeyboardButton("❌ Close ❌", callback_data="close_msg")]]
         text = "Pʀᴇᴠɪᴏᴜs Mᴇssᴀɢᴇ ᴡᴀs Dᴇʟᴇᴛᴇᴅ 🗑\nIғ ʏᴏᴜ ᴡᴀɴᴛ ᴛᴏ ɢᴇᴛ ᴛʜᴇ ғɪʟᴇs ᴀɢᴀɪɴ, ᴛʜᴇɴ ᴄʟɪᴄᴋ: [♻️ Cʟɪᴄᴋ Hᴇʀᴇ] ʙᴜᴛᴛᴏɴ ʙᴇʟᴏᴡ ᴇʟsᴇ ᴄʟᴏsᴇ ᴛʜɪs ᴍᴇssᴀɢᴇ. Bʏ ᴄʟɪᴄᴋɪɴɢ ᴛʜᴇ ᴄʟᴏsᴇ ʙᴜᴛᴛᴏɴ, ᴛʜɪs ᴍᴇssᴀɢᴇ ᴡɪʟʟ ʙᴇ ᴅᴇʟᴇᴛᴇᴅ."
         await context.bot.send_message(chat_id=chat_id, text=text, reply_markup=InlineKeyboardMarkup(keyboard))
@@ -72,16 +70,11 @@ async def send_video_and_schedule_delete(user_id: int, file_key: str, context: C
         video_message = await context.bot.send_video(chat_id=user_id, video=file_info["id"], caption=file_info["caption"], parse_mode=ParseMode.HTML)
         warning_text = "⚠️ Dᴜᴇ ᴛᴏ Cᴏᴘʏʀɪɢʜᴛ ɪssᴜᴇs....\nYᴏᴜʀ ғɪʟᴇs ᴡɪʟʟ ʙᴇ ᴅᴇʟᴇᴛᴇᴅ ᴡɪᴛʜɪɴ 30 Mɪɴᴜᴛᴇs. Sᴏ ᴘʟᴇᴀsᴇ ᴅᴏᴡɴʟᴏᴀᴅ ᴏʀ ғᴏʀᴡᴀʀᴅ ᴛʜᴇᴍ ᴛᴏ ᴀɴʏ ᴏᴛʜᴇʀ ᴘʟᴀᴄᴇ ғᴏʀ ғᴜᴛᴜʀᴇ ᴀᴠᴀɪʟᴀʙɪʟɪᴛʏ."
         warning_message = await context.bot.send_message(chat_id=user_id, text=warning_text)
-        
-        context.job_queue.run_once(
-            auto_delete_messages, 
-            DELETE_DELAY, 
-            data={'message_ids': [video_message.message_id, warning_message.message_id], 'file_key': file_key}, 
-            chat_id=user_id
-        )
+        context.job_queue.run_once(auto_delete_messages, DELETE_DELAY, data={'message_ids': [video_message.message_id, warning_message.message_id], 'file_key': file_key}, chat_id=user_id)
 
 # --- कमांड हैंडलर्स ---
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    logger.info("Received /start command")
     user = update.effective_user
     if context.args:
         file_key = context.args[0]
@@ -94,81 +87,67 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("Welcome! Please use a link from our main channel to get files.")
 
 async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    query = update.callback_query
-    user_id = query.from_user.id
-    data = query.data
-    
-    if data.startswith("check_"):
-        await query.answer()
-        file_key = data.split("_", 1)[1]
-        if await is_user_member(user_id, context):
-            await query.message.delete()
-            await send_video_and_schedule_delete(user_id, file_key, context)
-        else:
-            await query.answer("You haven't joined all channels yet. Please join and try again.", show_alert=True)
-            
-    elif data.startswith("resend_"):
-        await query.answer()
-        file_key = data.split("_", 1)[1]
-        await query.message.delete()
-        await send_video_and_schedule_delete(user_id, file_key, context)
-        
-    elif data == "close_msg":
-        await query.message.delete()
+    logger.info("Received a button click")
+    # ... (बाकी का कोड)
 
 def escape_markdown(text):
     escape_chars = r'_*[]()~`>#+-=|{}.!'
     return ''.join(f'\\{char}' if char in escape_chars else char for char in str(text))
 
 async def get_id_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    # ... (यह फंक्शन वैसा ही है)
-    pass # You can fill this in if you still need it
-
-# --- नया और सही किया हुआ /get कमांड ---
-async def get_forward_id_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    logger.info("Received /id command") # <--- डीबगिंग लाइन
     user_id = update.effective_user.id
-    #if user_id not in ADMIN_IDS:
-        #await update.message.reply_text("Sorry, this is an admin-only command.")
-        #return
+    # if user_id not in ADMIN_IDS:
+    #     logger.warning(f"Unauthorized /id attempt by {user_id}")
+    #     return
+        
+    msg = update.message.reply_to_message
+    if not msg:
+        logger.info("No replied message found for /id")
+        await update.message.reply_text("Please reply to a message to get its IDs.")
+        return
+    
+    # ... (बाकी का कोड)
+
+async def get_forward_id_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    logger.info("Received /get command") # <--- डीबगिंग लाइन
+    user_id = update.effective_user.id
+    # if user_id not in ADMIN_IDS:
+    #     logger.warning(f"Unauthorized /get attempt by {user_id}")
+    #     return
 
     msg = update.message.reply_to_message
-    # हम अब forward_origin को चेक करेंगे जो प्राइवेट और पब्लिक दोनों चैनलों के लिए काम करता है
     if not msg or not msg.forward_origin:
+        logger.info("No forwarded message found for /get")
         await update.message.reply_text("Please reply to a FORWARDED message from a channel.")
         return
 
-    origin = msg.forward_origin
-    chat_id = origin.chat.id
-    text = f"--- ℹ️ Forwarded Message IDs ℹ️ ---\n\n"
-    chat_id_text = escape_markdown(chat_id)
-    text += f"📢 *Original Channel ID:* `{chat_id_text}`\n\n"
-    
-    file_id = None
-    if msg.video: file_id = msg.video.file_id
-    elif msg.document: file_id = msg.document.file_id
-    
-    if file_id:
-        text += f"📄 *File ID:*\n`{escape_markdown(file_id)}`"
-    
-    await update.message.reply_text(text, parse_mode=ParseMode.MARKDOWN_V2)
+    # ... (बाकी का कोड)
 
 # --- मुख्य फंक्शन ---
 def main():
+    print("Starting main function...")
     TOKEN = os.environ.get("BOT_TOKEN")
     if not TOKEN:
-        logger.critical("Error: BOT_TOKEN not set!")
+        print("CRITICAL ERROR: BOT_TOKEN not set!")
         return
 
     application = Application.builder().token(TOKEN).build()
     
+    print("Adding handlers...")
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CallbackQueryHandler(button_handler))
-    application.add_handler(CommandHandler("id", get_id_handler)) # आप इसे रख सकते हैं या हटा सकते हैं
+    application.add_handler(CommandHandler("id", get_id_handler))
     application.add_handler(CommandHandler("get", get_forward_id_handler))
+    print("Handlers added.")
 
     keep_alive()
-    logger.info("Keep-alive server started. Bot is ready!")
+    
+    print("Starting bot polling...")
     application.run_polling()
+    print("Bot polling finished.")
+
 
 if __name__ == '__main__':
+    print("Script starting...")
     main()
