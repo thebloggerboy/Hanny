@@ -127,9 +127,9 @@ async def get_id_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 # --- नया और सही किया हुआ /get कमांड ---
 async def get_forward_id_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
-    if user_id not in ADMIN_IDS:
-        await update.message.reply_text("Sorry, this is an admin-only command.")
-        return
+    #if user_id not in ADMIN_IDS:
+        #await update.message.reply_text("Sorry, this is an admin-only command.")
+        #return
 
     msg = update.message.reply_to_message
     # हम अब forward_origin को चेक करेंगे जो प्राइवेट और पब्लिक दोनों चैनलों के लिए काम करता है
