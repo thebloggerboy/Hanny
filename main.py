@@ -20,7 +20,8 @@ FORCE_SUB_CHANNELS = [
     {"chat_id": -1002391821078, "name": "Join 2", "invite_link": "https://t.me/+T4LO1ePja_I5NWQ1"}
 ]
 FILE_DATA = {
-    "Episode1": {"id": "BAACAgUAAxkBAAMXaGpSqvDgq-0fAszJ6iItqfYpI7wAAroTAALdcVBXt_ZT-2d9Lno2BA", "caption": "<b>Episode 1</b>\nQuality: 720pHD"},
+    "Episode1": {"id": "BAACAgUAAxkBAAMXaGpSqvDgq-0fAszJ6iItqfYpI7wAAroTAALdcVBXt_ZT-2d9Lno2BA", "caption": "<b>Episode 1</b>\nQuality: 1080pHD"},
+    "Episode2": {"id": "BAACAgUAAxkBAAMKaGpLylL2eBYyfy9tX8wqGoVV12gAAv0VAALdcVBXBhEhvub79Q02BA", "caption": "<b>Episode 2</b>\nQuality: 1080pHD"},
 }
 ADMIN_IDS = [6056915535]  # अपनी यूजर ID यहाँ डालें
 
