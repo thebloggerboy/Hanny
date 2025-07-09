@@ -38,6 +38,10 @@ FILE_DATA = {
         "id": "BAACAgUAAxkBAAMKaGpLylL2eBYyfy9tX8wqGoVV12gAAv0VAALdcVBXBhEhvub79Q02BA", 
         "caption": "<b>Episode 2</b>\nQuality: 1080p"
     },
+    "Episode6": {
+        "id": "BAACAgUAAxkBAAMZaG68Tzi21IIlqaOU6FXRhEgUI6UAAmYWAALclllXrHLTroekKok2BA", 
+        "caption": "<b>Episode 2</b>\nQuality: 1080p"
+    },
     # और फाइलें यहाँ जोड़ें
 }
 
